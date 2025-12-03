@@ -76,6 +76,21 @@ SELECT ride_id, started_at as start_time, member_casual as usertype, ride_length
 FROM Divvy_Trips_2020_Q1;
 
 --4. Create Summary Statistics
+--Summary total trip placed by usertype in each year
+SELECT
+    SUBSTR(trip_date, -4) AS trip_year, 
+    usertype,
+    COUNT(ride_id) AS total_trip      
+FROM
+    all_trips
+GROUP BY
+    trip_year, usertype
+ORDER BY
+    trip_year, usertype;
+/*-- 2019: casual - 23163, member - 341906
+2019: casual - 48480, member - 378407
+--*/
+
 --Summary total rides, average time length, longest time length of member usertype and casual usertype
 SELECT
     usertype,
