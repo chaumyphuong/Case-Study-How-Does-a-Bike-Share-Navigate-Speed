@@ -163,7 +163,7 @@ Explore the complete end-to-end analysis with SQL queries, R visualizations, and
 # Share
 **A. Total Trips by Year and User Type**
 
-![](/img/usertype.png)
+![Usertype Comparison: 2019 vs 2020](/img/usertype.png)
 
 **Key Findings:**
 - In 2019, members overwhelmingly dominated the system, accounting for the vast majority of all trips, while casual riders represented only a small fraction.
@@ -174,7 +174,7 @@ Explore the complete end-to-end analysis with SQL queries, R visualizations, and
 
 **B. Day-of-Week Trend**
 
-![](/img/membership_by_day.png)
+![Membership by Day of Week](/img/membership_by_day.png)
 
 **Key Findings:**
 
@@ -188,7 +188,7 @@ Members rely on the system primarily for regular weekday commuting, maintaining 
 
 **C. Monthly Trend**
 
-![](/img/monthly_trend.png)
+![Monthly Usage Trend](/img/monthly_trend.png)
 
 **Key Findings:**
 - In January and February, members dominate usage with consistently high volumes, while casual riders remain a small minority.
@@ -199,7 +199,7 @@ Members rely on the system primarily for regular weekday commuting, maintaining 
 
 **D. Average Day-of-Week Trend**
 
-![](/img/average_membership_by_day.png)
+![Average membership by Day of Week](/img/average_membership_by_day.png)
 
 **Key Findings:**
 - Casual riders show a pronounced weekend peak, with average daily trips noticeably higher on Saturday and Sunday compared to weekdays.
@@ -210,7 +210,7 @@ Members rely on the system primarily for regular weekday commuting, maintaining 
 
 **E. Average Monthly Trend**
 
-![](/img/average_monthly_trend.png)
+![Average Monthly Usage Trend(/img/average_monthly_trend.png)
 
 **Key Findings:**
 - Casual riders show a clear upward trend in average daily trips from January through March, with the strongest increase occurring in March.
@@ -221,7 +221,7 @@ Members rely on the system primarily for regular weekday commuting, maintaining 
 
 **F. Distance by membership**
 
-![](/img/average_monthly_distance.png)
+![Average Monthly Distance](/img/average_monthly_distance.png)
 
 **Key Findings:**
 - Members take many short trips; casual riders take fewer but longer trips.
