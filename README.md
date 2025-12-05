@@ -147,6 +147,7 @@ The data generally adheres to the ROCCC framework (Reliable, Original, Comprehen
 12. Proceed to the analyze step.
 
 # [Process](#Process) 
-2 methods:
-- **SQL to analyze:** (../Bike Share Speadd SQL analyze)
-- **R:**
+I used SQL to view, check, and combine datasets, and critically, to develop the specific queries (statements) needed for the case study and perform initial statistical comparisons. Subsequently, I utilized R to re-execute or leverage the results of those SQL queries and generate comprehensive visualization reports that presented the comparison data, ultimately facilitating informed decision-making.
+
+- **SQL to analyze:** [Bike Share Navigate Speed SQL analyze](/Bike Share Navigate Speed SQL analyze.sql)
+- **R:** [Bike Share Navigate Speed R analyze](/Bike Share Navigate Speed R analyze)
