@@ -32,8 +32,8 @@ Moreno has set a clear goal: Design marketing strategies aimed at converting cas
 **6-step process for approaching a case study:**
 1. [Ask](#ask)
 2. [Prepare](#prepare)
-3. [Process](#process-and-analyze)
-4. [Analyze](#process-and-analyze)
+3. [Process](#process)
+4. [Analyze](#analyze)
 5. [Share](#share)
 6. [Act](#act)
 
@@ -158,7 +158,7 @@ Explore the complete end-to-end analysis with SQL queries, R visualizations, and
 
 [![Kaggle Notebook](https://img.shields.io/badge/Kaggle-Notebook-blue?logo=kaggle)](https://www.kaggle.com/code/phuongchau03/case-study-how-does-a-bike-share-navigate-speed)  
 
-- **Why Kaggle?** Zero setup: Load data → Run code → See charts instantly (e.g., Usertype 2019 vs 2020, Weekend Peaks for Casuals).  
+- **Why Kaggle?** Zero setup: Load data → Run code → See charts instantly  
 - **Key Sections:** [Business Task](#ask) | [Data Prep](#prepare) | [Process & Analyze](#process) | [Visuals & Insights](#share) | [Recommendations](#act)  
 
 # Share
