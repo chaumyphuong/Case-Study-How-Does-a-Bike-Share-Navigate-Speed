@@ -146,11 +146,20 @@ The data generally adheres to the ROCCC framework (Reliable, Original, Comprehen
 11. Create a column called day_of_week, and calculate the day of the week that each ride started using the WEEKDAY command (for example, =WEEKDAY(C2,1)) in each sheet. Format as General or as a number with no decimals, noting that 1 = Sunday and 7 = Saturday.
 12. Proceed to the analyze step.
 
-# Process and Analyze
+# Process
 I used SQL to view, check, and combine datasets, and critically, to develop the specific queries (statements) needed for the case study and perform initial statistical comparisons. Subsequently, I utilized R to re-execute or leverage the results of those SQL queries and generate comprehensive visualization reports that presented the comparison data, ultimately facilitating informed decision-making.
-
 - **SQL to analyze:** [Bike Share Navigate Speed SQL analyze](/analyze/Bike_Share_Navigate_SQL_analyze.sql)
 - **R:** [Bike Share Navigate Speed R analyze](/analyze/Bike_Share_Navigate_R_analyze.R)
+
+# Analyze
+## Interactive Full Analysis on Kaggle (Recommended - Run in Seconds!)
+
+Explore the complete end-to-end analysis with SQL queries, R visualizations, and key insights:  
+
+[![Kaggle Notebook](https://img.shields.io/badge/Kaggle-Notebook-blue?logo=kaggle)](https://www.kaggle.com/code/phuongchau03/case-study-how-does-a-bike-share-navigate-speed)  
+
+- **Why Kaggle?** Zero setup: Load data → Run code → See charts instantly (e.g., Usertype 2019 vs 2020, Weekend Peaks for Casuals).  
+- **Key Sections:** [Business Task](#ask) | [Data Prep](#prepare) | [Process & Analyze](#process) | [Visuals & Insights](#share) | [Recommendations](#act)  
 
 # Share
 **A. Total Trips by Year and User Type**
