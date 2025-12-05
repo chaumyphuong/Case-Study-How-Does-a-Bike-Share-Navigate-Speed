@@ -158,9 +158,9 @@ I used SQL to view, check, and combine datasets, and critically, to develop the 
 ![](/img/usertype.png)
 
 **Key Findings:**
-- In 2019, casual riders (red) made only ~ 40,000 trips, while members (cyan) made ~ 370,000 trips — members dominated usage (~90% of total trips).
-- In 2020, total trips increased dramatically. Member trips rose to ~410,000 (+10–15%), but casual rider trips exploded to ~70,000 (nearly 2x higher than 2019). The share of casual riders grew significantly from ~10% in 2019 to ~15% in 2020.
-- Overall ridership grew by ~25–30% from 2019 to 2020, driven mainly by a surge in casual users.
+- In 2019, members overwhelmingly dominated the system, accounting for the vast majority of all trips, while casual riders represented only a small fraction.
+- In 2020, total ridership surged strongly. Member usage grew modestly, but casual riders increased dramatically, nearly doubling their previous volume and significantly expanding their share of total trips.
+- The overall growth in ridership from 2019 to 2020 was substantial and primarily driven by the sharp rise in casual users rather than membership growth.
 
 **Conclusion:** 2020 saw a major shift toward casual rider growth, likely influenced by the COVID-19 pandemic (people avoiding subscriptions or using bikes for recreation/exercise).
 
@@ -169,44 +169,47 @@ I used SQL to view, check, and combine datasets, and critically, to develop the 
 ![](/img/membership_by_day.png)
 
 **Key Findings:**
-- Members (cyan) ride consistently high every day, peaking on Tuesday (~180,000 trips) and staying strong through Thursday.
-- Casual riders (red) have very low weekday usage (~10–20k) but spike dramatically on weekends, especially Saturday (~60,000).
-- Weekend (Sat–Sun) is when casuals contribute the most; Saturday casual trips are ~3–4× higher than weekdays.
 
-**Conclusion:** Members use the system primarily for commuting (weekday pattern), while casuals use it mostly for leisure (weekend pattern).
+- Members ride at consistently high levels throughout the week, with the strongest usage from Monday to Thursday and only a moderate dip on weekends.
+- Casual riders show very low activity on weekdays but surge dramatically on weekends, particularly on Saturday and Sunday.
+- On weekends, casual riders far outpace their weekday volumes, with Saturday marking the clear peak day for this group.
+
+**Conclusion:**
+Members rely on the system primarily for regular weekday commuting, maintaining steady usage patterns. In contrast, casual riders concentrate almost entirely on weekend leisure riding, revealing two distinctly different user behaviors within the same bike-share system.
+
 
 **C. Monthly Trend**
 
 ![](/img/monthly_trend.png)
 
 **Key Findings:**
-- January and February: Member trips ~230–250k, casual ~30–40k (members ~85–90% of total).
-- March: Huge surge — total trips jump to ~300k+, with casual trips skyrocketing to ~70–80k (almost double February), while member trips stay relatively flat or slightly increase.
-- Casual share jumps from ~12–15% in Jan–Feb to ~25%+ in March.
+- In January and February, members dominate usage with consistently high volumes, while casual riders remain a small minority.
+- March sees a sharp overall increase in trips, driven almost entirely by a dramatic surge in casual riders; member volumes stay relatively stable.
+- The casual share of total trips rises markedly in March, shifting from a minor fraction to a much more significant portion.
 
-**Conclusion:** March 2020 shows a dramatic increase in casual ridership, very likely due to early COVID-19 lockdowns — people using bikes for exercise/outdoor activity when gyms and public transit were avoided.
+**Conclusion:** The sudden explosion of casual ridership in March 2020 strongly reflects changing mobility behavior at the onset of the COVID-19 pandemic, with many people turning to bikes for safe, outdoor recreation and transportation as gyms closed and public transit was avoided. This marks the beginning of casual users becoming the primary growth driver of the system.
 
 **D. Average Day-of-Week Trend**
 
 ![](/img/average_membership_by_day.png)
 
 **Key Findings:**
-- Casual riders (red): Clear weekend peak (Saturday ~2,600, Sunday ~2,500 avg daily trips), lowest on Wednesday (~2,100).
-- Members (cyan): Much lower average daily trips (~500–700), relatively flat across the week, slight dip mid-week.
-- Casuals average 4–5× more daily trips than members on weekends, but similar on weekdays.
+- Casual riders show a pronounced weekend peak, with average daily trips noticeably higher on Saturday and Sunday compared to weekdays.
+- Member average daily trips are consistently lower than casuals and remain relatively flat across all days of the week, with only minor variations.
+- On weekends, casual riders far outpace members in average daily usage; on weekdays, the gap narrows considerably, though casuals still lead.
 
-**Conclusion:** When looking at per-day averages, casual riders dominate weekend usage by a wide margin; members are consistent but low-volume daily user
+**Conclusion:** Even when normalized to average daily trips, casual riders dominate the system, especially on weekends where their activity dwarfs that of members. Members maintain steady but much lower daily usage throughout the week, confirming that casual riders — not annual members — are the primary drivers of overall volume in 2020.
 
 **E. Average Monthly Trend**
 
 ![](/img/average_monthly_trend.png)
 
 **Key Findings:**
-- Casual riders (red): Steady increase from ~2,400 avg daily trips in January to ~2,600 in March.
-- Members (cyan): Very low and stable (~600–700 avg daily trips) across all three months.
-- In March, casual average daily trips are ~4× higher than members.
+- Casual riders show a clear upward trend in average daily trips from January through March, with the strongest increase occurring in March.
+- Member average daily trips remain consistently low and stable across all three months, with minimal variation.
+- Throughout the period, and especially in March, casual riders’ average daily usage far exceeds that of members.
 
-**Conclusion:** Even on an average daily basis, casual riders significantly outpace members in early 2020, with a clear upward trend in casual usage as the pandemic began.
+**Conclusion:** In early 2020, casual riders not only dominated overall volume on a per-day basis but also drove nearly all growth as the pandemic emerged. Members maintained steady but significantly lower daily activity, underscoring that casual users were the main force behind rising ridership during this period.
 
 **F. Distance by membership**
 
