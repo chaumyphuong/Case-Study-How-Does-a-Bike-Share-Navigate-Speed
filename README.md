@@ -159,7 +159,6 @@ Explore the complete end-to-end analysis with SQL queries, R visualizations, and
 [![Kaggle Notebook](https://img.shields.io/badge/Kaggle-Notebook-blue?logo=kaggle)](https://www.kaggle.com/code/phuongchau03/case-study-how-does-a-bike-share-navigate-speed)  
 
 - **Why Kaggle?** Zero setup: Load data → Run code → See charts instantly  
-- **Key Sections:** [Business Task](#ask) | [Data Prep](#prepare) | [Process & Analyze](#process) | [Visuals & Insights](#share) | [Recommendations](#act)  
 
 # Share
 **A. Total Trips by Year and User Type**
