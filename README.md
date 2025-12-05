@@ -148,22 +148,410 @@ The data generally adheres to the ROCCC framework (Reliable, Original, Comprehen
 
 # Process
 I used SQL to view, check, and combine datasets, and critically, to develop the specific queries (statements) needed for the case study and perform initial statistical comparisons. Subsequently, I utilized R to re-execute or leverage the results of those SQL queries and generate comprehensive visualization reports that presented the comparison data, ultimately facilitating informed decision-making.
-- **SQL to analyze:** [Bike Share Navigate Speed SQL analyze](/analyze/Bike_Share_Navigate_SQL_analyze.sql)
-- **R:** [Bike Share Navigate Speed R analyze](/analyze/Bike_Share_Navigate_R_analyze.R)
+## SQL to analyze:**
+
+```
+--1. Import Your Data
+
+--2. Explore Your Data
+--View Top Rows
+SELECT * FROM Divvy_Trips_2019_Q1 LIMIT 10;
+SELECT * FROM Divvy_Trips_2020_Q1 LIMIT 10;
+
+--Total Number of Rows 
+SELECT COUNT(*) FROM Divvy_Trips_2019_Q1; --365069
+SELECT COUNT(*) FROM Divvy_Trips_2020_Q1; --426887
+--Count usertype in 2 quarters
+SELECT usertype, COUNT(*) AS total_2019_q1 
+FROM Divvy_Trips_2019_Q1
+GROUP by usertype; --casual:23163, member: 341906
+
+SELECT member_casual AS usertype, COUNT(*) AS total_2020_q1
+FROM Divvy_Trips_2020_Q1
+GROUP by member_casual; --casual: 485480, member:378407
+
+--Select distinct
+SELECT DISTINCT from_station_name,to_station_name FROM Divvy_Trips_2019_Q1;
+SELECT DISTINCT start_station_name,end_station_name FROM Divvy_Trips_2020_Q1;
+
+--Min,max
+SELECT MIN(ride_length), MAX(ride_length) FROM Divvy_Trips_2019_Q1; --00:00:35 , 23:57:54
+SELECT MIN(ride_length), MAX(ride_length) FROM Divvy_Trips_2020_Q1; --0:00:00 , 9:59:00
+
+--Average
+SELECT AVG(ride_length) FROM Divvy_Trips_2019_Q1; --0.02875894693879787
+SELECT AVG(ride_length) FROM Divvy_Trips_2020_Q1; --0.045386718265020956
+
+--3. Use JOIN or UNION Statements (Combine Data)
+--Create a combine table
+create TABLE all_trips as
+SELECT trip_id AS ride_id, start_time AS started_at, usertype,
+    -- 1. Split date
+    SUBSTR(start_time,1, INSTR(start_time, ' ') - 1)
+    AS trip_date,
+    -- 2. Split time
+    SUBSTR(start_time, INSTR(start_time, ' ') + 1)
+    AS trip_time,
+    ride_length, day_of_week
+FROM Divvy_Trips_2019_Q1
+UNION ALL
+SELECT ride_id, started_at, member_casual as usertype,
+    -- 1. Split date
+    SUBSTR(started_at,1, INSTR(started_at, ' ') - 1)
+    AS trip_date,
+    -- 2. Split time
+    SUBSTR(started_at,INSTR(started_at, ' ') + 1)
+    AS trip_time,
+    ride_length, day_of_week
+FROM Divvy_Trips_2020_Q1;
+
+--View, member, start time and ride length of each trip
+SELECT trip_id AS ride_id, start_time, usertype, ride_length
+FROM Divvy_Trips_2019_Q1
+UNION ALL
+SELECT ride_id, started_at as start_time, member_casual as usertype, ride_length
+FROM Divvy_Trips_2020_Q1;
+
+--4. Create Summary Statistics
+--Summary total trip placed by usertype in each year
+SELECT SUBSTR(trip_date, -4) AS trip_year, usertype, COUNT(ride_id) AS total_trip      
+FROM all_trips
+GROUP BY trip_year, usertype
+ORDER BY trip_year, usertype;
+/*-- 2019: casual - 23163, member - 341906
+2019: casual - 48480, member - 378407
+--*/
+
+--Summary total rides, average time length, longest time length of member usertype and casual usertype
+SELECT usertype, COUNT(ride_id) AS total_rides, AVG(ride_length) AS avg_ride_length, MAX(ride_length) AS longest_trip
+FROM all_trips
+GROUP BY usertype;
+--casual: 71643 total_rides, 0.2966235361444942 avg_ride_length, 9:59:00 longest_trip
+--member: 720313 total_rides, 0.0.011971184748852235 avg_ride_length, 9:54:00 longest_trip
+
+--Summary total trip in each day of week of member usertype and casual usertype
+SELECT usertype,	day_of_week,	COUNT(ride_id) AS total_trips
+FROM all_trips
+GROUP BY usertype, day_of_week
+ORDER BY usertype, day_of_week;
+--Numbers 1 (Sunday) through 7 (Saturday)
+/*--casual: Sunday - 18652, Monday - 6747, Tuesday - 7992, Wednesday - 8422, Thursday - 7815, Friday - 8542, Saturday - 13473
+member: Sunday - 60197, Monday - 110430, Tuesday - 127974, Wednesday - 121903, Thursday - 125228, Friday - 115168, Saturday - 59413
+--*/
+
+--Summary total trip in each month of member usertype and casual usertype
+SELECT usertype, 
+		SUBSTR(trip_date, INSTR(trip_date, '/') + 1, INSTR(SUBSTR(trip_date, INSTR(trip_date, '/') + 1), '/') - 1)
+  AS trip_month,
+    COUNT(ride_id) AS total_rides
+FROM all_trips
+GROUP BY usertype,trip_month
+ORDER BY usertype,trip_month;
+/*--casual: January - 12387, February - 15508, March - 43748
+casual: January - 234769, February - 220263, March - 265281
+--*/
+```
+
+## **R:**
+```
+#1.Install packages and library
+
+install.packages("tidyverse")
+library(tidyverse)  #helps wrangle data
+library(lubridate)  #helps wrangle date attributes
+library(ggplot2)  #helps visualize data
+library(dplyr) #helps clean data
+library(tidyr) #helps clean data
+install.packages("geosphere") #for trip duration calculation
+library(geosphere)
+
+#2.Load data
+
+q1_2019 <- read_csv("/cloud/project/Divvy_tripdata/Divvy_Trips_2019_Q1.csv")
+q1_2020 <- read_csv("/cloud/project/Divvy_tripdata/Divvy_Trips_2020_Q1.csv")
+
+#3.Data check
+
+#Head
+head(q1_2019)
+head(q1_2020)
+#Str
+str(q1_2019)
+str(q1_2020)
+#colnames
+colnames(q1_2019)
+colnames(q1_2020)
+#glimpse
+glimpse(q1_2019)
+glimpse(q1_2020)
+#View
+view(q1_2019)
+view(q1_2020)
+
+
+#4. Clean Up and Add Data for Analysis
+
+#Rename 2019 columns to match 2020 schema
+
+q1_2019_clean <- q1_2019 %>%
+  select(
+    ride_id = trip_id,
+    started_at = start_time,
+    ended_at = end_time,
+    start_station_name = from_station_name,
+    end_station_name = to_station_name,
+    member_casual = usertype,
+    ride_length,
+    day_of_week,
+    trip_duration = tripduration
+  ) %>%
+  # Convert date time
+  mutate(
+    started_at = dmy_hm(started_at),
+    ended_at = dmy_hm(ended_at),
+  ) %>% 
+  # Convert trip_id
+  mutate(
+    ride_id = as.character(ride_id)
+  )
+
+view(q1_2019_clean)
+
+#Convert and add columns to match
+
+q1_2020_clean <- q1_2020 %>%
+  select(
+    ride_id,
+    started_at,
+    ended_at,
+    start_station_name,
+    end_station_name,
+    member_casual,
+    ride_length,
+    day_of_week,
+    start_lng, 
+    start_lat, 
+    end_lng, 
+    end_lat
+  ) %>% 
+  # Convert date time
+  mutate(
+    started_at = dmy_hms(started_at),
+    ended_at = dmy_hms(ended_at)
+    ) %>% 
+  # Add trip_duration
+  mutate(
+    trip_duration = distGeo(matrix(c(start_lng,start_lat),ncol=2),matrix(c(end_lng,end_lat),ncol=2))
+  )
+
+view(q1_2020_clean)
+
+#Combine data
+
+all_trips <- bind_rows(q1_2019_clean, q1_2020_clean)
+view (all_trips)
+
+#Clean memory
+
+rm(q1_2019,q1_2019_clean,q1_2020_clean)
+
+#Clean the final table
+
+all_trips_clean <- all_trips %>%
+  # Filter out negative duration trips
+  filter(ride_length > 0) %>%
+  # Add necessary time components for grouping
+  mutate(
+    trip_year = year(started_at),
+    trip_month = month(started_at, label = TRUE, abbr = FALSE),
+    # Recalculate day_of_week just in case the source column was numeric
+    day_of_week = wday(started_at, label = TRUE, abbr = FALSE, week_start = 1)
+  )
+
+view (all_trips_clean)
+rm(all_trips)
+
+# Descriptive analysis
+
+#A. Summary by User Type and Year
+
+summary_by_year <- all_trips_clean %>%
+  group_by(trip_year, member_casual) %>%
+  summarise(
+    total_trips = n()
+  )
+
+print(summary_by_year)
+
+#B. Overall User Summary
+
+overall_user <- all_trips_clean %>%
+  group_by(member_casual) %>%
+  summarise(
+    total_rides = n(),
+    avg_ride_length = mean(ride_length),
+    longest_trip_min = max(ride_length)
+  ) %>%
+  arrange(desc(total_rides))
+
+print(overall_user)
+
+#C. Day-of-Week Trend
+
+summary_by_weekday <- all_trips_clean %>%
+  group_by(member_casual, day_of_week) %>%
+  summarise(
+    total_trips = n()
+  ) %>%
+  # Pivot the data for a clean side-by-side comparison
+  pivot_wider(names_from = member_casual, values_from = total_trips) %>%
+  ungroup()
+
+print(summary_by_weekday)
+
+#D. Monthly Trend
+
+summary_by_month <- all_trips_clean %>%
+  group_by(member_casual, trip_month) %>%
+  summarise(
+    total_rides = n()
+  ) %>%
+  pivot_wider(names_from = member_casual, values_from = total_rides) %>%
+  ungroup()
+
+print(summary_by_month)
+
+#E. Distance trend by day of week
+
+summary_day_distance <- all_trips_clean %>%
+  group_by(day_of_week,member_casual) %>%
+  summarise(distance_of_ride = mean(trip_duration),) %>%
+  arrange(day_of_week)
+
+print(summary_day_distance)
+
+#F. Distance trend by day of week
+
+summary_month_distance <- all_trips_clean %>%
+  group_by(trip_month,member_casual) %>%
+  summarise(distance_of_ride = mean(trip_duration),) %>%
+  arrange(trip_month)
+
+print(summary_month_distance)
+
+# Share {#Share}
+
+#A. Total Trips by Year and User Type
+
+yearly_comparison_chart <- summary_by_year %>%
+  ggplot(aes(x = trip_year, y = total_trips, fill = member_casual)) +
+  geom_col(position = "dodge") +
+  labs(
+    title = "Usertype Comparison: 2019 vs. 2020",
+    x = "Year",
+    y = "Total Trips",
+    fill = "Rider Type"
+  ) +
+  theme_minimal()
+
+print(yearly_comparison_chart)
+
+#B. Day-of-Week Trend
+
+weekday_trend_chart <- all_trips_clean %>%
+  group_by(member_casual, day_of_week) %>%
+  summarise(total_trips = n()) %>%
+  ggplot(aes(x = day_of_week, y = total_trips, fill = member_casual)) +
+  geom_bar(position = "dodge",stat = "identity")+
+  labs(
+    title = "Membership by Day of Week",
+    x = "Day of Week",
+    y = "Total Trips",
+    color = "Rider Type"
+  ) +
+  theme_minimal()
+
+print(weekday_trend_chart)
+
+#C. Monthly Trend
+
+monthly_trend_chart <- all_trips_clean %>%
+  group_by(member_casual, trip_month) %>%
+  summarise(total_trips = n()) %>%
+  ggplot(aes(x = trip_month, y = total_trips, fill = member_casual)) +
+  geom_col(position = "dodge") +
+  labs(
+    title = "Monthly Usage Trend",
+    x = "Month",
+    y = "Total Trips",
+    fill = "Rider Type"
+  ) +
+  theme_minimal()
+
+print (monthly_trend_chart)
+
+#D. Average Day-of-Week Trend 
+
+avg_weekday_trend_chart <- all_trips_clean %>%
+  group_by(member_casual, day_of_week) %>%
+  summarise(average_ride_length=mean(ride_length)) %>%
+  ggplot(aes(x = day_of_week, y = average_ride_length, fill = member_casual)) +
+  geom_bar(position = "dodge",stat = "identity")+
+  labs(
+    title = "Average membership by Day of Week",
+    x = "Day of Week",
+    y = "Total Trips",
+    color = "Rider Type"
+  ) +
+  theme_minimal()
+
+print(avg_weekday_trend_chart)
+
+#E. Average Monthly Trend (Bar Chart, showing the March spike)
+
+avg_monthly_trend_chart <- all_trips_clean %>%
+  group_by(member_casual, trip_month) %>%
+  summarise(average_ride_length = mean(ride_length)) %>%
+  ggplot(aes(x = trip_month, y = average_ride_length, fill = member_casual)) +
+  geom_col(position = "dodge") +
+  labs(
+    title = "Average Monthly Usage Trend",
+    x = "Month",
+    y = "Total Trips",
+    fill = "Rider Type"
+  ) +
+  theme_minimal()
+
+print(avg_monthly_trend_chart)
+
+#F. Distance by membership
+
+ride_distance_chart <- all_trips_clean %>% 
+group_by(member_casual) %>%
+  filter(trip_duration < 10000) %>% 
+  ggplot(aes(x = trip_duration, fill = member_casual)) + 
+  geom_histogram()  +
+  labs(
+    title = "Average Monthly Distance",
+    x = "trip_duration",
+    y = "count",
+  ) +
+  theme_minimal()
+
+print(ride_distance_chart)
+```
 
 # Analyze
 ## Interactive Full Analysis on Kaggle (Recommended - Run in Seconds!)
 
-Explore the complete end-to-end analysis with SQL queries, R visualizations, and key insights:  
-
-[![Kaggle Notebook](https://img.shields.io/badge/Kaggle-Notebook-blue?logo=kaggle)](https://www.kaggle.com/code/phuongchau03/case-study-how-does-a-bike-share-navigate-speed)  
+Explore the complete end-to-end analysis with SQL queries, R visualizations, and key insights:  ![Kaggle Notebook](https://www.kaggle.com/code/phuongchau03/case-study-how-does-a-bike-share-navigate-speed)  
 
 - **Why Kaggle?** Zero setup: Load data → Run code → See charts instantly  
 
 # Share
 **A. Total Trips by Year and User Type**
 
-![Usertype Comparison: 2019 vs 2020](/img/usertype.png)
+![Usertype Comparison: 2019 vs 2020](/images_charts/usertype.png)
 
 **Key Findings:**
 - In 2019, members overwhelmingly dominated the system, accounting for the vast majority of all trips, while casual riders represented only a small fraction.
@@ -174,7 +562,7 @@ Explore the complete end-to-end analysis with SQL queries, R visualizations, and
 
 **B. Day-of-Week Trend**
 
-![Membership by Day of Week](/img/membership_by_day.png)
+![Membership by Day of Week](/images_charts/membership_by_day.png)
 
 **Key Findings:**
 
@@ -188,7 +576,7 @@ Members rely on the system primarily for regular weekday commuting, maintaining 
 
 **C. Monthly Trend**
 
-![Monthly Usage Trend](/img/monthly_trend.png)
+![Monthly Usage Trend](/images_charts/monthly_trend.png)
 
 **Key Findings:**
 - In January and February, members dominate usage with consistently high volumes, while casual riders remain a small minority.
@@ -199,7 +587,7 @@ Members rely on the system primarily for regular weekday commuting, maintaining 
 
 **D. Average Day-of-Week Trend**
 
-![Average membership by Day of Week](/img/average_membership_by_day.png)
+![Average membership by Day of Week](/images_charts/average_membership_by_day.png)
 
 **Key Findings:**
 - Casual riders show a pronounced weekend peak, with average daily trips noticeably higher on Saturday and Sunday compared to weekdays.
@@ -210,7 +598,7 @@ Members rely on the system primarily for regular weekday commuting, maintaining 
 
 **E. Average Monthly Trend**
 
-![Average Monthly Usage Trend(/img/average_monthly_trend.png)
+![Average Monthly Usage Trend](/images_charts/average_monthly_trend.png)
 
 **Key Findings:**
 - Casual riders show a clear upward trend in average daily trips from January through March, with the strongest increase occurring in March.
@@ -221,7 +609,7 @@ Members rely on the system primarily for regular weekday commuting, maintaining 
 
 **F. Distance by membership**
 
-![Average Monthly Distance](/img/average_monthly_distance.png)
+![Average Monthly Distance](/images_charts/average_monthly_distance.png)
 
 **Key Findings:**
 - Members take many short trips; casual riders take fewer but longer trips.
