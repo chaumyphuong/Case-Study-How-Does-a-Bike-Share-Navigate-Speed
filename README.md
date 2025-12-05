@@ -146,8 +146,28 @@ The data generally adheres to the ROCCC framework (Reliable, Original, Comprehen
 11. Create a column called day_of_week, and calculate the day of the week that each ride started using the WEEKDAY command (for example, =WEEKDAY(C2,1)) in each sheet. Format as General or as a number with no decimals, noting that 1 = Sunday and 7 = Saturday.
 12. Proceed to the analyze step.
 
-# [Process](#Process) 
+# [Process](#Process), # [Analyze](#Analyze)
 I used SQL to view, check, and combine datasets, and critically, to develop the specific queries (statements) needed for the case study and perform initial statistical comparisons. Subsequently, I utilized R to re-execute or leverage the results of those SQL queries and generate comprehensive visualization reports that presented the comparison data, ultimately facilitating informed decision-making.
 
 - **SQL to analyze:** [Bike Share Navigate Speed SQL analyze](/Bike_Share_Navigate_SQL_analyze.sql)
 - **R:** [Bike Share Navigate Speed R analyze](/Bike_Share_Navigate_R_analyze.R)
+
+# [Share](#Share)
+
+# [Act](#Act)
+**Conclusion:**
+1. The Casual users have leisure, and tourism rides mostly on weekends.
+2. The Annual users have commute or pragmatic rides during weekdays.
+
+**Prediction and Strategic Recommendations**
+ 
+Based on the demonstrated high demand for long-duration, recreational trips during the onset of the Q1 2020 shifts, the following prediction for Q2 2020 and the foreseeable future is strongly supported:
+- **Prediction:** The System Will Become Leisure-Dominant
+- **Sustained Casual Dominance:** The Casual segment will continue to drive ridership volume and revenue growth through the warmer months. The March tripling of casual trips is not an anomaly but a precursor to sustained high recreational demand as individuals continue to seek safe, isolated outdoor activities.
+- **Increased Revenue:** The system's overall Average Revenue Per Trip will increase because the highest growth is coming from the long-duration Casual segment, which generates more fee revenue per trip.
+- **Weekend Capacity Crises:** Peak demand will heavily strain fleet capacity on weekends and at stations near parks, recreational hubs, and waterfronts.
+
+# Strategic Recommendations
+- **Operations Focus:** Shift resource allocation for bike rebalancing from purely downtown/commuter routes to recreational stations during peak weekend hours (Friday evening through Sunday evening).
+- **Maintenance:** Prioritize fleet maintenance and longevity, as long-duration casual use puts more wear and tear on the bikes than short commutes.
+- **Pricing/Marketing:** Capitalize on the leisure market growth. Introduce flexible, short-term recreational passes or partnerships that target weekend and holiday users.
