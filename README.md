@@ -146,4 +146,7 @@ The data generally adheres to the ROCCC framework (Reliable, Original, Comprehen
 11. Create a column called day_of_week, and calculate the day of the week that each ride started using the WEEKDAY command (for example, =WEEKDAY(C2,1)) in each sheet. Format as General or as a number with no decimals, noting that 1 = Sunday and 7 = Saturday.
 12. Proceed to the analyze step.
 
-**SQL to analyze**
+# [Process](#Process) 
+2 methods:
+- **SQL to analyze:** (../Bike Share Speadd SQL analyze)
+- **R:**
