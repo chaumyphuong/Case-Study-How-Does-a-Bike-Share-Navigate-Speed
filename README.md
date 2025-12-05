@@ -166,7 +166,7 @@ I used SQL to view, check, and combine datasets, and critically, to develop the 
 
 **B. Day-of-Week Trend**
 
-![](/img/membership_by_trend.png)
+![](/img/membership_by_day.png)
 
 **Key Findings:**
 - Members (cyan) ride consistently high every day, peaking on Tuesday (~180,000 trips) and staying strong through Thursday.
